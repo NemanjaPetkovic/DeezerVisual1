@@ -1,0 +1,84 @@
+{% extends "index.html"%}
+{% block body %}
+<script src="http://cdn-files.deezer.com/js/min/dz.js"></script>
+<div id="dz-root"></div>
+
+<div class="container">
+	<canvas id="userChart1"></canvas>
+</div>
+
+
+<script src="http://cdn-files.deezer.com/js/min/dz.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+<script>
+DZ.init({
+      appId  : '253822',
+      channelUrl : 'http://127.0.0.1:5000',
+    });
+
+DZ.getLoginStatus(function(response){
+          var id = response.userID;
+          var token = response.authResponse.accessToken;
+
+
+var url = 'https://api.deezer.com/user/' + id +'/history&access_token='+ token;
+	function httpGet(url)
+		{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", url, false ); 
+    xmlHttp.send( null );
+    return JSON.parse(xmlHttp.response);
+		}
+
+
+var apiresponse = httpGet(url)
+
+var ctx10 = document.getElementById('userChart1');
+var stackedBar = new Chart(ctx10, {
+    type: 'horizontalBar',
+    data: {
+   	labels: [apiresponse['data'][0]['title'],apiresponse['data'][1]['title'],apiresponse['data'][2]['title'],apiresponse['data'][3]['title'],apiresponse['data'][4]['title'],apiresponse['data'][5]['title'],apiresponse['data'][6]['title'],apiresponse['data'][7]['title'],apiresponse['data'][8]['title'],apiresponse['data'][9]['title']],
+      datasets: [
+        {
+          label: "Last listened to",
+          data: [1,2,3,4,5,6,7,8,9,10],
+      backgroundColor: [
+                'rgb(23, 32, 42)',
+                'rgb(28, 40, 51)',
+                'rgb(33, 47, 61)',
+                'rgb(39, 55, 70)',
+                'rgb(44, 62, 80)',
+                'rgb(86, 101, 115)',
+                'rgb(128, 139, 150)',
+                'rgb(171, 178, 185)',
+                'rgb(213, 216, 220)',
+                'rgb(234, 236, 238)'
+
+            ]}
+      ]},
+		options: {
+			legend: {
+                display: false
+            },
+        	scales: {
+          		xAxes: [{
+          			ticks : {
+                        max : 0,    
+                        min : 10
+                    },
+            		display: false,
+            		 
+          				}],
+          		yAxes: [{
+            		display: true
+          				}],
+        			}
+      			}
+
+    })
+
+})
+</script>
+
+{% endblock %}
