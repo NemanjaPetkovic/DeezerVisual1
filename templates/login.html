@@ -47,7 +47,7 @@
 
     	DZ.init({
       appId  : '253822',
-      channelUrl : 'https://dezzervisualazation.herokuapp.com/main',
+      channelUrl : 'https://dezzervisualazation.herokuapp.com/channel.html',
     });
 
         function login(){
@@ -56,7 +56,7 @@
               console.log(response);
               if (response.status == 'connected') {
                 DZ.api('/user/me', function(user) {
-                  window.location.href = 'https://dezzervisualazation.herokuapp.com/main';
+                  // window.location.href = 'http://127.0.0.1:5000/main';
                    });
                   }
                 }
